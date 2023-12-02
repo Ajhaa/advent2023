@@ -1,10 +1,13 @@
 import solutions.runSolution
-import java.lang.RuntimeException
+import java.time.LocalDate
 
 fun main(args: Array<String>) {
-    val day = args[0].toInt()
+    val day = if (args.isNotEmpty()) {
+        args[0].toInt()
+    } else {
+        LocalDate.now().dayOfMonth
+    }
 
     val solution = runSolution(day)
-
     println(solution)
 }
