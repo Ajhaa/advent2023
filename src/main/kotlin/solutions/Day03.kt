@@ -1,11 +1,12 @@
 package solutions
 
+@Suppress("unused")
 class Day03 : Solution() {
     override fun answerPart1(): Any {
-        TODO("Not yet implemented")
+        return 0
     }
 
     override fun answerPart2(): Any {
-        TODO("Not yet implemented")
+        return 0
     }
 }
