@@ -58,16 +58,12 @@ class Day02 : Solution {
         return minimums.values.reduce(Int::times)
     }
 
-    override fun answerPart1(input: String): String {
-        return input.split("\n")
-            .filter(::checkGame)
+    override fun answerPart1(input: List<String>): Any {
+        return input.filter(::checkGame)
             .sumOf(::extractIndex)
-            .toString()
     }
 
-    override fun answerPart2(input: String): String {
-        return input.split("\n")
-            .sumOf(::calculateGamePower)
-            .toString()
+    override fun answerPart2(input: List<String>): Any {
+        return input.sumOf(::calculateGamePower)
     }
 }

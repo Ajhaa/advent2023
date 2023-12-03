@@ -48,16 +48,12 @@ class Day01 : Solution {
         return (String() + first + latest).toInt()
     }
 
-    override fun answerPart1(input: String): String {
-        return input.split("\n")
-            .map(::extractNumber)
-            .sum()
-            .toString()
+    override fun answerPart1(input: List<String>): Any {
+        return input.map(::extractNumber).sum()
     }
 
-    override fun answerPart2(input: String): String {
-        return input.split("\n")
-            .sumOf { extractNumber(it, enableNumberWords = true) }
-            .toString()
+    override fun answerPart2(input: List<String>): Any {
+        return input.sumOf { extractNumber(it, enableNumberWords = true) }
+
     }
 }
