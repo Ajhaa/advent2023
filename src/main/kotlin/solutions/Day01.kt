@@ -2,7 +2,8 @@ package solutions
 
 import java.lang.Exception
 
-class Day01 : Solution {
+@Suppress("unused")
+class Day01 : Solution() {
     private val digitWords = mapOf(
         "one" to '1',
         "two" to '2',
@@ -48,12 +49,12 @@ class Day01 : Solution {
         return (String() + first + latest).toInt()
     }
 
-    override fun answerPart1(input: List<String>): Any {
-        return input.map(::extractNumber).sum()
+    override fun answerPart1(): Any {
+        return inputLines.map(::extractNumber).sum()
     }
 
-    override fun answerPart2(input: List<String>): Any {
-        return input.sumOf { extractNumber(it, enableNumberWords = true) }
+    override fun answerPart2(): Any {
+        return inputLines.sumOf { extractNumber(it, enableNumberWords = true) }
 
     }
 }

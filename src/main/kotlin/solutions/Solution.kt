@@ -1,13 +1,24 @@
 package solutions
 
+import util.getResource
 import util.httpGet
+import util.writeResource
 import java.lang.RuntimeException
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
-interface Solution {
-    fun answerPart1(input: List<String>): Any
-    fun answerPart2(input: List<String>): Any
+abstract class Solution {
+
+    protected lateinit var input: String
+    protected lateinit var inputLines: List<String>
+
+    fun init(input: String) {
+        this.input = input
+        this.inputLines = input.lines()
+    }
+
+    abstract fun answerPart1(): Any
+    abstract fun answerPart2(): Any
 }
 
 data class SolutionResult(
@@ -15,16 +26,17 @@ data class SolutionResult(
     val results: List<Pair<Any, Duration>>
 )
 
-fun getResource(name: String): String {
-    return ClassLoader.getSystemClassLoader().getResource(name)?.readText()
-        ?: throw RuntimeException("Could not open resource $name")
-}
+fun getInput(day: Int): String {
+    val inputResourceName = "input$day.txt"
 
-fun getInputWithHttp(day: Int): List<String> {
-    val cookie = getResource("cookie")
-    val input = httpGet("https://adventofcode.com/2023/day/$day/input", cookie)
-
-    return input.trim().lines()
+    return try {
+        getResource(inputResourceName)
+    } catch (_: Exception) {
+        val cookie = getResource("cookies")
+        val input = httpGet("https://adventofcode.com/2023/day/$day/input", cookie).trim()
+        writeResource(inputResourceName, input)
+        input
+    }
 }
 
 
@@ -46,19 +58,20 @@ fun getSolution(day: Int): Solution {
 }
 
 fun runSolution(day: Int): SolutionResult {
+    val input = getInput(day)
     val solution = getSolution(day)
-    val input = getInputWithHttp(day)
+    solution.init(input)
 
-    val res1 = runAndMeasure(solution::answerPart1, input)
-    val res2 = runAndMeasure(solution::answerPart2, input)
+    val res1 = runAndMeasure(solution::answerPart1)
+    val res2 = runAndMeasure(solution::answerPart2)
 
     return SolutionResult(day, listOf(res1, res2))
 }
 
-fun runAndMeasure(solution: (List<String>) -> Any, input: List<String>) : Pair<Any, Duration> {
+fun runAndMeasure(solution: () -> Any) : Pair<Any, Duration> {
     val answer: Any
     val time = measureTime {
-        answer = solution(input)
+        answer = solution()
     }
 
     return Pair(answer, time)

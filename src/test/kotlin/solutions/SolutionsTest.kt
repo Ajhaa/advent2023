@@ -5,7 +5,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class SolutionsTest {
-
     @Test
     fun `day 1 is correct`() = checkSolution(1, 53194, 54249)
     @Test
@@ -13,7 +12,7 @@ class SolutionsTest {
 
     private fun checkSolution(day: Int, vararg correctAnswers: Any) {
         val solution = runSolution(day)
-        
+
         val assertions = solution.results
             .map { it.first }
             .zip(correctAnswers)

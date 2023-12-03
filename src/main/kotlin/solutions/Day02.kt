@@ -9,7 +9,7 @@ enum class Color(val defaultLimit: Int) {
 typealias GameRound = Map<Color, Int>
 
 @Suppress("unused")
-class Day02 : Solution {
+class Day02 : Solution() {
     private fun gameRoundFromStr(str: String): GameRound {
         val gameRound: MutableMap<Color, Int> = mutableMapOf()
 
@@ -58,12 +58,12 @@ class Day02 : Solution {
         return minimums.values.reduce(Int::times)
     }
 
-    override fun answerPart1(input: List<String>): Any {
-        return input.filter(::checkGame)
+    override fun answerPart1(): Any {
+        return inputLines.filter(::checkGame)
             .sumOf(::extractIndex)
     }
 
-    override fun answerPart2(input: List<String>): Any {
-        return input.sumOf(::calculateGamePower)
+    override fun answerPart2(): Any {
+        return inputLines.sumOf(::calculateGamePower)
     }
 }
