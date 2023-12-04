@@ -11,6 +11,9 @@ class SolutionsTest {
     fun `day 2 is correct`() = checkSolution(2, 2528, 67363)
     @Test
     fun `day 3 is correct`() = checkSolution(3, 525181, 84289137)
+    @Test
+    fun `day 4 is correct`() = checkSolution(3, 25183, 5667240)
+
 
     private fun checkSolution(day: Int, vararg correctAnswers: Any) {
         val solution = runSolution(day)
