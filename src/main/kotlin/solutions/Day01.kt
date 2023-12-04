@@ -1,7 +1,5 @@
 package solutions
 
-import java.lang.Exception
-
 @Suppress("unused")
 class Day01 : Solution() {
     private val digitWords = mapOf(
@@ -32,11 +30,11 @@ class Day01 : Solution() {
 
             if (!char.isDigit() && enableNumberWords) {
                 for (len in 3..5) {
-                    val substr =
+                    val substring =
                         if (reverse) str.safeSubstring(i - len + 1, i + 1) else str.safeSubstring(i, i + len)
 
 
-                    val num = digitWords[substr]
+                    val num = digitWords[substring]
                     if (num != null) {
                         return num
                     }
@@ -65,6 +63,12 @@ class Day01 : Solution() {
 
     override fun answerPart2(): Any {
         return inputLines.sumOf { extractNumber(it, enableNumberWords = true) }
-
     }
+
+    override val sampleInput = """
+        1abc2
+        pqr3stu8vwx
+        a1b2c3d4e5f
+        treb7uchet
+    """.trimIndent()
 }

@@ -3,7 +3,7 @@ package solutions
 import util.getResource
 import util.httpGet
 import util.writeResource
-import java.lang.RuntimeException
+import kotlin.RuntimeException
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
@@ -16,6 +16,21 @@ abstract class Solution {
         this.input = input
         this.inputLines = input.lines()
     }
+
+    fun warmup(amount: Int = 1000) {
+        if (sampleInput == null) {
+            throw RuntimeException("Cannot warmup, no sampleInput provided")
+        }
+
+        init(sampleInput!!)
+
+        for (i in 1..amount) {
+            answerPart1()
+            answerPart2()
+        }
+    }
+
+    protected open val sampleInput: String? = null
 
     abstract fun answerPart1(): Any
     abstract fun answerPart2(): Any
@@ -57,9 +72,11 @@ fun getSolution(day: Int): Solution {
     return constructor.newInstance() as Solution
 }
 
-fun runSolution(day: Int): SolutionResult {
+fun runSolution(day: Int, doWarmup: Boolean = false): SolutionResult {
     val input = getInput(day)
     val solution = getSolution(day)
+    if (doWarmup) solution.warmup()
+
     solution.init(input)
 
     val res1 = runAndMeasure(solution::answerPart1)

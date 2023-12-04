@@ -1,8 +1,11 @@
 package solutions
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.assertAll
 import java.time.LocalDate
 import kotlin.test.Test
+import kotlin.test.assertTrue
+import kotlin.time.Duration
 
 class SolutionsTest {
     private val correctAnswers = listOf(
@@ -22,9 +25,27 @@ class SolutionsTest {
             currentDate.dayOfMonth
         }
 
-        val solutions = (1..days).map { runSolution(it) }
+        val solutions = (1..days).map { runSolution(it, true) }
         assertAll(solutions.flatMap(::getAssertions))
     }
+
+    @Disabled
+    @Test
+    fun `all solutions are fast enough`() {
+        val currentDate = LocalDate.now()
+
+        val days = if (currentDate.isAfter(LocalDate.of(2023, 12, 25))) {
+            25
+        } else {
+            currentDate.dayOfMonth
+        }
+
+        val solutions = (1..days).map { runSolution(it, true) }
+        assertAll(solutions.flatMap(::getAssertions))
+
+        assertTrue(solutions.flatMap { it.results }.all { it.second < Duration.parse("5ms") })
+    }
+
 
     private fun getAssertions(solution: SolutionResult): List<() -> Unit> {
         val dayAnswers = correctAnswers[solution.day - 1]

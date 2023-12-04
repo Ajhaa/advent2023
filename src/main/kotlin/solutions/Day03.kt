@@ -5,9 +5,10 @@ class Day03 : Solution() {
     private var line = 0
     private var col = 0
 
-    private val starMap: MutableMap<Pair<Int, Int>, MutableList<Int>> = mutableMapOf()
+    private lateinit var starMap: MutableMap<Pair<Int, Int>, MutableList<Int>>;
 
     private fun addToStar(line: Int, col: Int, number: Int) {
+        if (!this::starMap.isInitialized) return
         val pair = Pair(line, col)
 
         if (starMap[pair] == null) {
@@ -60,6 +61,9 @@ class Day03 : Solution() {
     }
 
     override fun answerPart1(): Any {
+        line = 0
+        col = 0
+
         var sum = 0
         while (line < inputLines.size) {
             col = 0
@@ -76,12 +80,27 @@ class Day03 : Solution() {
     }
 
     override fun answerPart2(): Any {
-        if (starMap.isEmpty()) {
-            answerPart1()
-        }
+        line = 0
+        col = 0
+        starMap = mutableMapOf()
+        answerPart1()
+
 
         return starMap.values
             .filter { it.size == 2 }
             .sumOf { it[0] * it[1] }
     }
+
+    override val sampleInput = """
+        467..114..
+        ...*......
+        ..35..633.
+        ......#...
+        617*......
+        .....+.58.
+        ..592.....
+        ......755.
+        ...${'$'}.*....
+        .664.598..
+    """.trimIndent()
 }

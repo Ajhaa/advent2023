@@ -3,20 +3,20 @@ import java.time.LocalDate
 import kotlin.time.Duration
 
 fun main(args: Array<String>) {
+    val doWarmup = args.contains("warm")
     val arg1 = args.getOrNull(0)
 
     if (arg1 == "all") {
-        runAll()
-        return runAll()
+        return runAll(doWarmup)
     }
 
     val day = arg1?.toInt() ?: LocalDate.now().dayOfMonth
 
-    val solution = runSolution(day)
+    val solution = runSolution(day, doWarmup)
     println(solution)
 }
 
-fun runAll(doPrint: Boolean = true) {
+fun runAll(doWarmup: Boolean = false) {
     val currentDate = LocalDate.now()
 
     val days = if (currentDate.isAfter(LocalDate.of(2023, 12, 25))) {
@@ -28,7 +28,7 @@ fun runAll(doPrint: Boolean = true) {
     var totalExecTime = Duration.ZERO
     for (day in 1..days) {
         val solution = try {
-            runSolution(day)
+            runSolution(day, doWarmup)
         } catch (e: Error) {
             println("could not run day $day")
             continue
@@ -37,7 +37,7 @@ fun runAll(doPrint: Boolean = true) {
         solution.results.forEach {
             totalExecTime += it.second
         }
-        if (doPrint) println(solution)
+        println(solution)
     }
 
     println("Sum of solution execution times: $totalExecTime")
