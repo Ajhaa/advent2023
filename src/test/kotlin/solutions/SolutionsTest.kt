@@ -1,30 +1,40 @@
 package solutions
 
 import org.junit.jupiter.api.assertAll
+import java.time.LocalDate
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class SolutionsTest {
-    @Test
-    fun `day 1 is correct`() = checkSolution(1, 53194, 54249)
-    @Test
-    fun `day 2 is correct`() = checkSolution(2, 2528, 67363)
-    @Test
-    fun `day 3 is correct`() = checkSolution(3, 525181, 84289137)
-    @Test
-    fun `day 4 is correct`() = checkSolution(4, 25183, 5667240)
+    private val correctAnswers = listOf(
+        listOf(53194, 54249),
+        listOf(2528, 67363),
+        listOf(525181, 84289137),
+        listOf(25183, 5667240)
+    )
 
+    @Test
+    fun `test all days`() {
+        val currentDate = LocalDate.now()
 
-    private fun checkSolution(day: Int, vararg correctAnswers: Any) {
-        val solution = runSolution(day)
+        val days = if (currentDate.isAfter(LocalDate.of(2023, 12, 25))) {
+            25
+        } else {
+            currentDate.dayOfMonth
+        }
 
-        val assertions = solution.results
+        val solutions = (1..days).map { runSolution(it) }
+        assertAll(solutions.flatMap(::getAssertions))
+    }
+
+    private fun getAssertions(solution: SolutionResult): List<() -> Unit> {
+        val dayAnswers = correctAnswers[solution.day - 1]
+        return solution.results
             .map { it.first }
-            .zip(correctAnswers)
+            .zip(dayAnswers)
             .map {
-                { assertEquals(it.second, it.first) }
+                {
+                    assert(it.second == it.first) { "day ${solution.day} incorrect. expected ${it.second}, got ${it.first}" }
+                }
             }
-
-        assertAll(assertions)
     }
 }
