@@ -5,7 +5,7 @@ class Day03 : Solution() {
     private var line = 0
     private var col = 0
 
-    private lateinit var starMap: MutableMap<Pair<Int, Int>, MutableList<Int>>;
+    private lateinit var starMap: MutableMap<Pair<Int, Int>, MutableList<Int>>
 
     private fun addToStar(line: Int, col: Int, number: Int) {
         if (!this::starMap.isInitialized) return

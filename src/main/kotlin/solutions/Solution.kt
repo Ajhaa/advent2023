@@ -39,7 +39,17 @@ abstract class Solution {
 data class SolutionResult(
     val day: Int,
     val results: List<Pair<Any, Duration>>
-)
+) {
+    override fun toString(): String {
+        val builder = StringBuilder()
+        builder.appendLine("Day $day")
+        results.forEachIndexed { index, pair ->
+            builder.appendLine("[Part ${index + 1}] result: ${pair.first}; runtime: ${pair.second}")
+        }
+
+        return builder.toString()
+    }
+}
 
 fun getInput(day: Int): String {
     val inputResourceName = "input$day.txt"

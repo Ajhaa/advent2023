@@ -2,6 +2,7 @@ package solutions
 
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.assertAll
+import util.getChristmasDay
 import java.time.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertTrue
@@ -32,13 +33,7 @@ class SolutionsTest {
     @Disabled
     @Test
     fun `all solutions are fast enough`() {
-        val currentDate = LocalDate.now()
-
-        val days = if (currentDate.isAfter(LocalDate.of(2023, 12, 25))) {
-            25
-        } else {
-            currentDate.dayOfMonth
-        }
+        val days = getChristmasDay(2023)
 
         val solutions = (1..days).map { runSolution(it, true) }
         assertAll(solutions.flatMap(::getAssertions))
