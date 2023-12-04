@@ -68,7 +68,7 @@ fun runSolution(day: Int): SolutionResult {
     return SolutionResult(day, listOf(res1, res2))
 }
 
-fun runAndMeasure(solution: () -> Any) : Pair<Any, Duration> {
+fun runAndMeasure(solution: () -> Any): Pair<Any, Duration> {
     val answer: Any
     val time = measureTime {
         answer = solution()

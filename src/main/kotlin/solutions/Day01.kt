@@ -16,37 +16,47 @@ class Day01 : Solution() {
         "nine" to '9',
     )
 
-    private fun extractNumber(str: String, enableNumberWords: Boolean = false): Int {
-        var first: Char? = null
-        var latest: Char? = null
+    private fun String.safeSubstring(start: Int, end: Int): String? {
+        if (start < 0 || end > this.length) {
+            return null
+        }
 
-        for (i in str.indices) {
-            var char = str[i]
+        return substring(start, end)
+    }
+
+    private fun extractDigit(str: String, reverse: Boolean = false, enableNumberWords: Boolean) : Char {
+        val indices = if (reverse) str.indices.reversed() else str.indices
+
+        for (i in indices) {
+            val char = str[i]
 
             if (!char.isDigit() && enableNumberWords) {
-                for (key in digitWords.keys) {
-                    val substr = try {
-                        str.substring(i, i + key.length)
-                    } catch (e: Exception) {
-                        continue
-                    }
+                for (len in 3..5) {
+                    val substr =
+                        if (reverse) str.safeSubstring(i - len + 1, i + 1) else str.safeSubstring(i, i + len)
 
-                    if (substr == key) {
-                        char = digitWords[key]!!
-                        break
+
+                    val num = digitWords[substr]
+                    if (num != null) {
+                        return num
                     }
                 }
             }
 
             if (char.isDigit()) {
-                if (first == null) {
-                    first = char
-                }
-                latest = char
+                return char
             }
         }
 
-        return (String() + first + latest).toInt()
+        throw RuntimeException("No digit found")
+    }
+
+    private fun extractNumber(str: String, enableNumberWords: Boolean = false): Int {
+        val first = extractDigit(str, enableNumberWords = enableNumberWords)
+        val last = extractDigit(str, reverse = true, enableNumberWords = enableNumberWords)
+
+
+        return (String() + first + last).toInt()
     }
 
     override fun answerPart1(): Any {
