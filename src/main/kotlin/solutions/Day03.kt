@@ -1,6 +1,5 @@
 package solutions
 
-@Suppress("unused")
 class Day03 : Solution() {
     private var line = 0
     private var col = 0

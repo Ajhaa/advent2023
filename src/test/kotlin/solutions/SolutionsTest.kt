@@ -3,7 +3,6 @@ package solutions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.assertAll
 import util.currentAdventDay
-import java.time.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlin.time.Duration

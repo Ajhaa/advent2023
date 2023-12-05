@@ -1,8 +1,5 @@
 package solutions
 
-import kotlin.math.min
-
-@Suppress("unused")
 class Day05 : Solution() {
 
     data class Range(
@@ -16,24 +13,16 @@ class Day05 : Solution() {
         val size: Long,
     ) {
 
-        val sourceEnd: Long
+        private val sourceEnd: Long
             get() = sourceStart + size - 1
 
-        val destinationEnd: Long
+        private val destinationEnd: Long
             get() = destinationStart + size - 1
 
-        fun map(num: Long): Long? {
-            if (sourceStart <= num && num < (sourceStart + size)) {
-                return destinationStart + (num - sourceStart)
-            }
-
-            return null
-        }
-
-        fun mapTo(range: Range, target: MutableList<Range>) : Boolean {
+        fun mapTo(range: Range, target: MutableList<Range>): Boolean {
             if (range.start > sourceEnd) return false
 
-            if (range.start >= sourceStart && range.end <= sourceEnd ) {
+            if (range.start >= sourceStart && range.end <= sourceEnd) {
                 val offset = range.start - sourceStart
                 val endDistance = range.end - range.start
                 range.start = destinationStart + offset
@@ -64,29 +53,8 @@ class Day05 : Solution() {
         }
     }
 
-    private fun mapToNext(values: List<Long>, rangeMaps: List<RangeMap>): List<Long> {
-        val nexts = mutableListOf<Long>()
-
-        for (value in values) {
-            var result: Long? = null
-            for (range in rangeMaps) {
-                result = range.map(value)
-                if (result != null) break
-            }
-
-            if (result != null) {
-                nexts.add(result)
-            } else {
-                nexts.add(value)
-            }
-        }
-
-        return nexts
-    }
-
-
     // How to handle range split in half by rangemap
-    private fun mapRangesToNext(ranges: List<Range>, rangeMaps: List<RangeMap>) : List<Range> {
+    private fun mapRangesToNext(ranges: List<Range>, rangeMaps: List<RangeMap>): List<Range> {
         val nexts = mutableListOf<Range>()
 
         for (range in ranges) {
@@ -104,33 +72,14 @@ class Day05 : Solution() {
         return nexts
     }
 
-    private fun createRanges(ranges: List<String>) : List<RangeMap> {
+    private fun createRanges(ranges: List<String>): List<RangeMap> {
         return ranges.map {
             val (destination, source, size) = it.split(" ").map(String::toLong)
             RangeMap(source, destination, size)
         }
     }
 
-    private fun calculateLowestLocation(lines: List<String>, seeds: List<Long>) : Long {
-        var mapped = seeds
-        var startIndex = 3
-        for (i in 2..<lines.size) {
-            if (lines[i].isBlank()) {
-                val ranges = createRanges(
-                    lines.subList(
-                        startIndex, i
-                    )
-                )
-                mapped = mapToNext(mapped, ranges)
-
-                startIndex = i + 2
-            }
-        }
-
-        return mapped.min()
-    }
-
-    private fun calculateRangeLowestLocation(lines: List<String>, seeds: List<Range>) : Long {
+    private fun calculateRangeLowestLocation(lines: List<String>, seeds: List<Range>): Long {
         var mapped = seeds
         var startIndex = 3
         for (i in 2..<lines.size) {
@@ -148,18 +97,25 @@ class Day05 : Solution() {
 
         return mapped.minOf { it.start }
     }
+
     override fun answerPart1(): Any {
         val lines = inputLines + ""
-        val seeds = lines[0]
-            .split(":")[1]
-                .split(" ")
-                .filter(String::isNotBlank)
-                .map(String::toLong)
+        val seeds = mutableListOf<Long>()
 
-        return calculateLowestLocation(lines, seeds)
+        lines[0]
+            .split(":")[1]
+            .split(" ")
+            .filter(String::isNotBlank)
+            .map(String::toLong)
+            .forEach {
+                seeds.add(it)
+                seeds.add(1)
+            }
+
+        return calculateRangeLowestLocation(lines, parseSeedRanges(seeds))
     }
 
-    private fun parseSeedRanges(seeds: List<Long>) : List<Range> {
+    private fun parseSeedRanges(seeds: List<Long>): List<Range> {
         val seedRanges = mutableListOf<Range>()
         for (i in seeds.indices step 2) {
             val (start, size) = seeds.subList(i, i + 2)

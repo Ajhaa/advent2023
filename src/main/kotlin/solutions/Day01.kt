@@ -1,6 +1,5 @@
 package solutions
 
-@Suppress("unused")
 class Day01 : Solution() {
     private val digitWords = mapOf(
         "one" to '1',

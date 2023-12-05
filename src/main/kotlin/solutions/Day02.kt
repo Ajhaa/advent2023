@@ -8,7 +8,6 @@ enum class Color(val defaultLimit: Int) {
 
 typealias GameRound = Map<Color, Int>
 
-@Suppress("unused")
 class Day02 : Solution() {
     private fun gameRoundFromStr(str: String): GameRound {
         val gameRound: MutableMap<Color, Int> = mutableMapOf()

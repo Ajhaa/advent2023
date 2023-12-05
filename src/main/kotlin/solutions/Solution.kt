@@ -56,10 +56,13 @@ fun getInput(day: Int): String {
 
     return try {
         getResource(inputResourceName)
-    } catch (_: Exception) {
-        val cookie = getResource("cookies")
+    } catch (e: Exception) {
+        val cookie = System.getenv("ADVENT_OF_CODE_COOKIES")
         val input = httpGet("https://adventofcode.com/2023/day/$day/input", cookie).trim()
-        writeResource(inputResourceName, input)
+
+        if (System.getenv("CI") == null) {
+            writeResource(inputResourceName, input)
+        }
         input
     }
 }

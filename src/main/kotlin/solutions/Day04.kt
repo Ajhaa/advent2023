@@ -2,7 +2,6 @@ package solutions
 
 import kotlin.math.min
 
-@Suppress("unused")
 class Day04 : Solution() {
     private fun extractNumbersList(str: String) =
         str.split(" ").filter(String::isNotBlank).map(String::toInt)
