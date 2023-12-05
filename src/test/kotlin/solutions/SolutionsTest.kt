@@ -14,7 +14,7 @@ class SolutionsTest {
         listOf(2528, 67363),
         listOf(525181, 84289137),
         listOf(25183, 5667240),
-        listOf(650599855L, 0L)
+        listOf(650599855L, 1240035L)
     )
 
     @Test
