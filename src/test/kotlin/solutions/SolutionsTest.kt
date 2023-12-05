@@ -2,29 +2,24 @@ package solutions
 
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.assertAll
-import util.getChristmasDay
+import util.currentAdventDay
 import java.time.LocalDate
 import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlin.time.Duration
 
 class SolutionsTest {
-    private val correctAnswers = listOf(
+    private val correctAnswers: List<List<Any>> = listOf(
         listOf(53194, 54249),
         listOf(2528, 67363),
         listOf(525181, 84289137),
-        listOf(25183, 5667240)
+        listOf(25183, 5667240),
+        listOf(650599855L, 0L)
     )
 
     @Test
     fun `test all days`() {
-        val currentDate = LocalDate.now()
-
-        val days = if (currentDate.isAfter(LocalDate.of(2023, 12, 25))) {
-            25
-        } else {
-            currentDate.dayOfMonth
-        }
+        val days = currentAdventDay(2023)
 
         val solutions = (1..days).map { runSolution(it, true) }
         assertAll(solutions.flatMap(::getAssertions))
@@ -33,7 +28,7 @@ class SolutionsTest {
     @Disabled
     @Test
     fun `all solutions are fast enough`() {
-        val days = getChristmasDay(2023)
+        val days = currentAdventDay(2023)
 
         val solutions = (1..days).map { runSolution(it, true) }
         assertAll(solutions.flatMap(::getAssertions))

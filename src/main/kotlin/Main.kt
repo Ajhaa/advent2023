@@ -1,5 +1,5 @@
 import solutions.runSolution
-import util.getChristmasDay
+import util.currentAdventDay
 import java.time.LocalDate
 import kotlin.time.Duration
 import kotlin.time.measureTime
@@ -23,7 +23,7 @@ fun main(args: Array<String>) {
 }
 
 fun runAll(doWarmup: Boolean = false) {
-    val days = getChristmasDay(2023)
+    val days = currentAdventDay(2023)
 
     var totalExecTime = Duration.ZERO
     for (day in 1..days) {
