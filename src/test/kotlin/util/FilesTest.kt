@@ -8,7 +8,7 @@ class FilesTest {
 
     @Test
     fun `getResource returns a file`() {
-        val resource = getResource("input1.txt")
+        val resource = getResource("test.txt")
         assertNotNull(resource)
         assertTrue { resource.isNotBlank() }
     }
