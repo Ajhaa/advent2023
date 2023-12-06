@@ -19,9 +19,7 @@ class PuzzleInput(val string: String) {
 
                 val input = httpGet("https://adventofcode.com/$year/day/$day/input", cookie).trim()
 
-                if (System.getenv("CI") == null) {
-                    writeResource(inputResourceName, input)
-                }
+                writeResource(inputResourceName, input)
                 input
             }
 

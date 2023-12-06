@@ -24,6 +24,11 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    - name: Cache inputs
+      uses: actions/cache@v3
+      with:
+        path: src/main/resources/**/*.txt
+        key: advent-of-code-inputs
     - name: Build with Gradle
       env:
         ADVENT_OF_CODE_COOKIES: ${{ secrets.ADVENT_OF_CODE_COOKIES }}
