@@ -58,6 +58,8 @@ fun getInput(day: Int): String {
         getResource(inputResourceName)
     } catch (e: Exception) {
         val cookie = System.getenv("ADVENT_OF_CODE_COOKIES")
+            ?: throw RuntimeException("Could not read env variable ADVENT_OF_CODE_COOKIES")
+
         val input = httpGet("https://adventofcode.com/2023/day/$day/input", cookie).trim()
 
         if (System.getenv("CI") == null) {
