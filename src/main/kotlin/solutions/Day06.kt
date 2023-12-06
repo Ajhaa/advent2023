@@ -1,28 +1,31 @@
 package solutions
 
+import kotlin.math.*
+
 class Day06 : Solution() {
+
+    // x^2 - tx + d = 0
 
     data class Race(
         val time: Long,
         val distance: Long,
     )
 
+    private fun solveQuadratic(a: Double, b: Double, c: Double) : Pair<Double, Double> {
+        val sqrtPart = sqrt(b * b - 4 * a * c)
+        val sol1 = (-b + sqrtPart) / 2 * a
+        val sol2 = (-b - sqrtPart) / 2 * a
+        return Pair(sol1, sol2)
+    }
+
     private fun raceFromPair(pair: Pair<Long, Long>) : Race {
         return Race(pair.first, pair.second)
     }
 
     private fun countSolutions(race: Race) : Int {
-        var solutionCount = 0
-        for (accelerationTime in 1..race.time) {
-            val remainingTime = race.time - accelerationTime
-            val speed = accelerationTime
+        val (sol1, sol2) = solveQuadratic(1.0, -race.time.toDouble(), race.distance.toDouble())
 
-            if (remainingTime * speed > race.distance) {
-                solutionCount++
-            }
-        }
-
-        return solutionCount
+        return abs(sol1.toInt() - sol2.toInt())
     }
 
     private val whitespaceRegex = Regex("\\s+")
