@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
         for (arg in args) {
             runCatching {
                 val dayRange = if (arg.contains("..")) {
-                    val (begin, end) = arg.split("..").map { it.toInt()}
+                    val (begin, end) = arg.split("..").map { it.toInt() }
                     (begin..end)
                 } else {
                     val day = arg.toInt()
@@ -30,7 +30,9 @@ fun main(args: Array<String>) {
                     val solution = runSolution(day, year, doWarmup)
                     println(solution)
                 }
-            }.onFailure { println("Ignoring invalid argument $arg") }
+            }.onFailure {
+                if (arg != "warm" && !yearRegex.matches(arg)) println("Ignoring invalid argument $arg")
+            }
         }
     }
 
