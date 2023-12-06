@@ -2,9 +2,9 @@
 
 These are my kotlin solutions for advent of code (currently only year 2023).  
 To run the program, you have to either
-1) some input files and place them in `src/main/resources/y2023/`,
-naming them `input$1.txt`
-2) find your advent of code session cookie and set the environment variable `ADVENT_OF_CODE_COOKIES="session=<value>"`
+1) get some input files and place them in `src/main/resources/y2023/`,
+naming them `input{day}.txt`
+2) find your advent of code session cookie and set the environment variable `ADVENT_OF_CODE_COOKIES="session=<value>"`. The program will fetch them from the advent of code website and save them in resources
 
 Run the program with gradle wrapper. By default, the current days solution will be run (or 25th if it's after christmas)
 The following arguments can be passed to the program in any order:
