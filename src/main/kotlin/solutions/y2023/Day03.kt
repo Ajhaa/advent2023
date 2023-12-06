@@ -1,10 +1,14 @@
-package solutions
+package solutions.y2023
 
-class Day03 : Solution() {
+import solutions.PuzzleInput
+import solutions.Solution
+
+class Day03 : Solution {
     private var line = 0
     private var col = 0
 
     private lateinit var starMap: MutableMap<Pair<Int, Int>, MutableList<Int>>
+    private lateinit var inputLines: List<String>
 
     private fun addToStar(line: Int, col: Int, number: Int) {
         if (!this::starMap.isInitialized) return
@@ -59,7 +63,8 @@ class Day03 : Solution() {
         }
     }
 
-    override fun answerPart1(): Any {
+    override fun answerPart1(input: PuzzleInput): Any {
+        inputLines = input.lines
         line = 0
         col = 0
 
@@ -78,11 +83,12 @@ class Day03 : Solution() {
         return sum
     }
 
-    override fun answerPart2(): Any {
+    override fun answerPart2(input: PuzzleInput): Any {
+        inputLines = input.lines
         line = 0
         col = 0
         starMap = mutableMapOf()
-        answerPart1()
+        answerPart1(input)
 
 
         return starMap.values

@@ -1,10 +1,10 @@
-package solutions
+package solutions.y2023
 
+import solutions.PuzzleInput
+import solutions.Solution
 import kotlin.math.*
 
-class Day06 : Solution() {
-
-    // x^2 - tx + d = 0
+class Day06 : Solution {
 
     data class Race(
         val time: Long,
@@ -35,8 +35,8 @@ class Day06 : Solution() {
             .filter { it.isNotBlank() }
     }
 
-    override fun answerPart1(): Any {
-        val lines = inputLines
+    override fun answerPart1(input: PuzzleInput): Any {
+        val lines = input.lines
         val times = parseNumberStrings(lines[0]).map(String::toLong)
         val distances = parseNumberStrings(lines[1]).map(String::toLong)
 
@@ -44,8 +44,8 @@ class Day06 : Solution() {
         return races.map(::countSolutions).reduce(Int::times)
     }
 
-    override fun answerPart2(): Any {
-        val lines = inputLines
+    override fun answerPart2(input: PuzzleInput): Any {
+        val lines = input.lines
         val time = parseNumberStrings(lines[0]).joinToString("").toLong()
         val distance = parseNumberStrings(lines[1]).joinToString("").toLong()
         return countSolutions(Race(time, distance))

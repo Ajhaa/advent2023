@@ -1,6 +1,9 @@
-package solutions
+package solutions.y2023
 
-class Day05 : Solution() {
+import solutions.PuzzleInput
+import solutions.Solution
+
+class Day05 : Solution {
 
     data class Range(
         var start: Long,
@@ -98,8 +101,8 @@ class Day05 : Solution() {
         return mapped.minOf { it.start }
     }
 
-    override fun answerPart1(): Any {
-        val lines = inputLines + ""
+    override fun answerPart1(input: PuzzleInput): Any {
+        val lines = input.lines + ""
         val seeds = mutableListOf<Long>()
 
         lines[0]
@@ -125,8 +128,8 @@ class Day05 : Solution() {
         return seedRanges
     }
 
-    override fun answerPart2(): Any {
-        val lines = inputLines + ""
+    override fun answerPart2(input: PuzzleInput): Any {
+        val lines = input.lines + ""
 
         val seeds = lines[0]
             .split(":")[1]

@@ -1,8 +1,10 @@
-package solutions
+package solutions.y2023
 
+import solutions.PuzzleInput
+import solutions.Solution
 import kotlin.math.min
 
-class Day04 : Solution() {
+class Day04 : Solution {
     private fun extractNumbersList(str: String) =
         str.split(" ").filter(String::isNotBlank).map(String::toInt)
 
@@ -24,15 +26,15 @@ class Day04 : Solution() {
         return numbers.toSet().intersect(winningNumbers.toSet()).size
     }
 
-    override fun answerPart1(): Any {
-        return inputLines.sumOf(::parseAndScore)
+    override fun answerPart1(input: PuzzleInput): Any {
+        return input.lines.sumOf(::parseAndScore)
     }
 
-    override fun answerPart2(): Any {
-        val extraCards = MutableList(inputLines.size) { 1 }
+    override fun answerPart2(input: PuzzleInput): Any {
+        val extraCards = MutableList(input.lines.size) { 1 }
         var totalCardAmount = 0
 
-        inputLines.forEachIndexed { index, card ->
+        input.lines.forEachIndexed { index, card ->
             val cardAmount = extraCards[index]
             totalCardAmount += cardAmount
 

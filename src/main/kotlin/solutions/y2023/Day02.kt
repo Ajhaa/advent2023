@@ -1,5 +1,7 @@
-package solutions
+package solutions.y2023
 
+import solutions.PuzzleInput
+import solutions.Solution
 import kotlin.math.max
 
 enum class Color(val defaultLimit: Int) {
@@ -8,7 +10,7 @@ enum class Color(val defaultLimit: Int) {
 
 typealias GameRound = Map<Color, Int>
 
-class Day02 : Solution() {
+class Day02 : Solution {
     private fun gameRoundFromStr(str: String): GameRound {
         val gameRound: MutableMap<Color, Int> = mutableMapOf()
 
@@ -57,13 +59,13 @@ class Day02 : Solution() {
         return minimums.values.reduce(Int::times)
     }
 
-    override fun answerPart1(): Any {
-        return inputLines.filter(::checkGame)
+    override fun answerPart1(input: PuzzleInput): Any {
+        return input.lines.filter(::checkGame)
             .sumOf(::extractIndex)
     }
 
-    override fun answerPart2(): Any {
-        return inputLines.sumOf(::calculateGamePower)
+    override fun answerPart2(input: PuzzleInput): Any {
+        return input.lines.sumOf(::calculateGamePower)
     }
 
     override val sampleInput = """

@@ -1,39 +1,22 @@
 package solutions
 
-import util.getResource
-import util.httpGet
-import util.writeResource
 import kotlin.RuntimeException
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
-abstract class Solution {
-
-    protected lateinit var input: String
-    protected lateinit var inputLines: List<String>
-
-    fun init(input: String) {
-        this.input = input
-        this.inputLines = input.lines()
-    }
-
+interface Solution {
     fun warmup(amount: Int = 1000) {
-        if (sampleInput == null) {
-            throw RuntimeException("Cannot warmup, no sampleInput provided")
-        }
-
-        init(sampleInput!!)
-
+        val sample = PuzzleInput(sampleInput)
         for (i in 1..amount) {
-            answerPart1()
-            answerPart2()
+            answerPart1(sample)
+            answerPart2(sample)
         }
     }
 
-    protected open val sampleInput: String? = null
+    val sampleInput: String
 
-    abstract fun answerPart1(): Any
-    abstract fun answerPart2(): Any
+    fun answerPart1(input: PuzzleInput): Any
+    fun answerPart2(input: PuzzleInput): Any
 }
 
 data class SolutionResult(
@@ -51,30 +34,11 @@ data class SolutionResult(
     }
 }
 
-fun getInput(day: Int): String {
-    val inputResourceName = "input$day.txt"
-
-    return try {
-        getResource(inputResourceName)
-    } catch (e: Exception) {
-        val cookie = System.getenv("ADVENT_OF_CODE_COOKIES")
-            ?: throw RuntimeException("Could not read env variable ADVENT_OF_CODE_COOKIES")
-
-        val input = httpGet("https://adventofcode.com/2023/day/$day/input", cookie).trim()
-
-        if (System.getenv("CI") == null) {
-            writeResource(inputResourceName, input)
-        }
-        input
-    }
-}
-
-
 fun getSolution(day: Int): Solution {
     val dayString = day.toString().padStart(2, '0')
 
     val clazz = try {
-        Class.forName("solutions.Day$dayString")
+        Class.forName("solutions.y2023.Day$dayString")
     } catch (exception: ClassNotFoundException) {
         throw RuntimeException("Could not find a solution class for day $dayString")
     }
@@ -88,22 +52,20 @@ fun getSolution(day: Int): Solution {
 }
 
 fun runSolution(day: Int, doWarmup: Boolean = false): SolutionResult {
-    val input = getInput(day)
+    val input = PuzzleInput.fetch(day)
     val solution = getSolution(day)
     if (doWarmup) solution.warmup()
 
-    solution.init(input)
-
-    val res1 = runAndMeasure(solution::answerPart1)
-    val res2 = runAndMeasure(solution::answerPart2)
+    val res1 = runAndMeasure(input, solution::answerPart1)
+    val res2 = runAndMeasure(input, solution::answerPart2)
 
     return SolutionResult(day, listOf(res1, res2))
 }
 
-fun runAndMeasure(solution: () -> Any): Pair<Any, Duration> {
+fun runAndMeasure(input: PuzzleInput, solution: (PuzzleInput) -> Any): Pair<Any, Duration> {
     val answer: Any
     val time = measureTime {
-        answer = solution()
+        answer = solution(input)
     }
 
     return Pair(answer, time)

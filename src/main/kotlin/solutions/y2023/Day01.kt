@@ -1,6 +1,9 @@
-package solutions
+package solutions.y2023
 
-class Day01 : Solution() {
+import solutions.PuzzleInput
+import solutions.Solution
+
+class Day01 : Solution {
     private val digitWords = mapOf(
         "one" to '1',
         "two" to '2',
@@ -56,12 +59,12 @@ class Day01 : Solution() {
         return (String() + first + last).toInt()
     }
 
-    override fun answerPart1(): Any {
-        return inputLines.map(::extractNumber).sum()
+    override fun answerPart1(input: PuzzleInput): Any {
+        return input.lines.map(::extractNumber).sum()
     }
 
-    override fun answerPart2(): Any {
-        return inputLines.sumOf { extractNumber(it, enableNumberWords = true) }
+    override fun answerPart2(input: PuzzleInput): Any {
+        return input.lines.sumOf { extractNumber(it, enableNumberWords = true) }
     }
 
     override val sampleInput = """
