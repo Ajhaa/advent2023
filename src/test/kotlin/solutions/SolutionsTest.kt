@@ -21,7 +21,7 @@ class SolutionsTest {
     fun `test all days`() {
         val days = currentAdventDay(2023)
 
-        val solutions = (1..days).map { runSolution(it, true) }
+        val solutions = (1..days).map { runSolution(it, doWarmup = true) }
         assertAll(solutions.flatMap(::getAssertions))
     }
 
@@ -30,7 +30,7 @@ class SolutionsTest {
     fun `all solutions are fast enough`() {
         val days = currentAdventDay(2023)
 
-        val solutions = (1..days).map { runSolution(it, true) }
+        val solutions = (1..days).map { runSolution(it, doWarmup = true) }
         assertAll(solutions.flatMap(::getAssertions))
 
         assertTrue(solutions.flatMap { it.results }.all { it.second < Duration.parse("5ms") })

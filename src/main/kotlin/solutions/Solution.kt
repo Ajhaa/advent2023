@@ -21,6 +21,7 @@ interface Solution {
 
 data class SolutionResult(
     val day: Int,
+    val year: Int = 2023,
     val results: List<Pair<Any, Duration>>
 ) {
     override fun toString(): String {
@@ -34,13 +35,13 @@ data class SolutionResult(
     }
 }
 
-fun getSolution(day: Int): Solution {
+fun getSolution(day: Int, year: Int = 2023): Solution {
     val dayString = day.toString().padStart(2, '0')
 
     val clazz = try {
-        Class.forName("solutions.y2023.Day$dayString")
+        Class.forName("solutions.y$year.Day$dayString")
     } catch (exception: ClassNotFoundException) {
-        throw RuntimeException("Could not find a solution class for day $dayString")
+        throw RuntimeException("Could not find a solution class for $year day $dayString")
     }
 
     val constructor = clazz.constructors.find { it.parameterCount == 0 }
@@ -51,15 +52,15 @@ fun getSolution(day: Int): Solution {
     return constructor.newInstance() as Solution
 }
 
-fun runSolution(day: Int, doWarmup: Boolean = false): SolutionResult {
-    val input = PuzzleInput.fetch(day)
-    val solution = getSolution(day)
+fun runSolution(day: Int, year: Int = 2023, doWarmup: Boolean = false): SolutionResult {
+    val solution = getSolution(day, year)
+    val input = PuzzleInput.fetch(day, year)
     if (doWarmup) solution.warmup()
 
     val res1 = runAndMeasure(input, solution::answerPart1)
     val res2 = runAndMeasure(input, solution::answerPart2)
 
-    return SolutionResult(day, listOf(res1, res2))
+    return SolutionResult(day, year, listOf(res1, res2))
 }
 
 fun runAndMeasure(input: PuzzleInput, solution: (PuzzleInput) -> Any): Pair<Any, Duration> {

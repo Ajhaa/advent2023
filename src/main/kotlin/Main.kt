@@ -1,34 +1,49 @@
 import solutions.runSolution
 import util.currentAdventDay
-import java.time.LocalDate
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
 fun main(args: Array<String>) {
     val programTime = measureTime {
         val doWarmup = args.contains("warm")
-        val arg1 = args.getOrNull(0)
+        val yearRegex = Regex("year=[0-9]+")
+        val year = args
+            .find { yearRegex.matches(it) }
+            ?.split("=")
+            ?.get(1)?.toInt() ?: 2023
 
-        if (arg1 == "all") {
-            return@measureTime runAll(doWarmup)
+        if (args.contains("all")) {
+            return@measureTime runAll(year, doWarmup)
         }
 
-        val day = arg1?.toInt() ?: LocalDate.now().dayOfMonth
+        for (arg in args) {
+            runCatching {
+                val dayRange = if (arg.contains("..")) {
+                    val (begin, end) = arg.split("..").map { it.toInt()}
+                    (begin..end)
+                } else {
+                    val day = arg.toInt()
+                    (day..day)
+                }
 
-        val solution = runSolution(day, doWarmup)
-        println(solution)
+                for (day in dayRange) {
+                    val solution = runSolution(day, year, doWarmup)
+                    println(solution)
+                }
+            }.onFailure { println("Ignoring invalid argument $arg") }
+        }
     }
 
     println("Total program running time $programTime")
 }
 
-fun runAll(doWarmup: Boolean = false) {
+fun runAll(year: Int, doWarmup: Boolean = false) {
     val days = currentAdventDay(2023)
 
     var totalExecTime = Duration.ZERO
     for (day in 1..days) {
         val solution = try {
-            runSolution(day, doWarmup)
+            runSolution(day, year, doWarmup)
         } catch (e: Error) {
             println("could not run day $day")
             continue
