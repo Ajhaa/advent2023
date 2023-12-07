@@ -90,13 +90,12 @@ class Day07 : Solution {
             private fun upgrade(type: HandType, jokerCount: Int) : HandType {
                 if (jokerCount == 0) return type
                 return when (type) {
-                    FIVE_OF_KIND -> FIVE_OF_KIND
                     FOUR_OF_KIND -> FIVE_OF_KIND
-                    FULL_HOUSE -> FULL_HOUSE
                     THREE_KIND -> if (jokerCount == 1) FOUR_OF_KIND else FIVE_OF_KIND
                     TWO_PAIR -> FULL_HOUSE
                     ONE_PAIR -> upgrade(THREE_KIND, jokerCount - 1)
                     HIGH_CARD -> upgrade(ONE_PAIR, jokerCount - 1)
+                    else -> type
                 }
             }
         }
