@@ -1,5 +1,6 @@
 import solutions.runSolution
 import util.currentAdventDay
+import kotlin.NumberFormatException
 import kotlin.time.Duration
 import kotlin.time.measureTime
 
@@ -17,7 +18,7 @@ fun main(args: Array<String>) {
         }
 
         for (arg in args) {
-            runCatching {
+            try {
                 val dayRange = if (arg.contains("..")) {
                     val (begin, end) = arg.split("..").map { it.toInt() }
                     (begin..end)
@@ -30,7 +31,7 @@ fun main(args: Array<String>) {
                     val solution = runSolution(day, year, doWarmup)
                     println(solution)
                 }
-            }.onFailure {
+            } catch (e: NumberFormatException) {
                 if (arg != "warm" && !yearRegex.matches(arg)) println("Ignoring invalid argument $arg")
             }
         }
