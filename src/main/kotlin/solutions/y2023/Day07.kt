@@ -4,6 +4,8 @@ import solutions.PuzzleInput
 import solutions.Solution
 
 class Day07 : Solution {
+    private var enableJoker = false
+
     override fun answerPart1(input: PuzzleInput): Any {
         val lines = input.lines
         val hands = lines
@@ -26,11 +28,17 @@ class Day07 : Solution {
     }
 
     override fun answerPart2(input: PuzzleInput): Any {
-        return 0L
+        enableJoker = true
+        val answer = answerPart1(input)
+        enableJoker = false
+        return answer
     }
 
     fun compareCard(first: Char, second: Char): Int {
         if (first == second) return 0
+        if (enableJoker && first == 'J') return -1
+        if (enableJoker && second == 'J') return 1
+
         if (first.isDigit()) {
             if (second.isDigit()) {
                 return first.compareTo(second)
@@ -53,30 +61,49 @@ class Day07 : Solution {
         TWO_PAIR,
         ONE_PAIR,
         HIGH_CARD;
-        companion object {
-            fun fromString(hand: String): HandType {
-                val cards = mutableMapOf<Char, Int>().withDefault { 0 }
 
+        companion object {
+            fun fromString(hand: String, jokerEnabled: Boolean = false): HandType {
+                val cards = mutableMapOf<Char, Int>().withDefault { 0 }
                 for (char in hand) {
                     val oldVal = cards.getValue(char)
                     cards[char] = oldVal + 1
                 }
 
-                val highestAmount = cards.maxOf { it.value }
+                val filtered  = cards.filter { !jokerEnabled || it.key != 'J' }
+                val highestAmount = if (filtered.isEmpty()) 0 else filtered.maxOf { it.value }
 
-                return when (highestAmount) {
+                val type =  when (highestAmount) {
                     5 -> FIVE_OF_KIND
                     4 -> FOUR_OF_KIND
-                    3 -> if (cards.any { it.value == 2 }) FULL_HOUSE else THREE_KIND
-                    2 -> if (cards.count { it.value == 2} == 2) TWO_PAIR else ONE_PAIR
+                    3 -> if (filtered.any { it.value == 2 }) FULL_HOUSE else THREE_KIND
+                    2 -> if (filtered.count { it.value == 2 } == 2) TWO_PAIR else ONE_PAIR
                     else -> HIGH_CARD
+                }
+                val jokerCount = cards.getValue('J')
+
+                if (!jokerEnabled) return type
+
+                return upgrade(type, jokerCount)
+            }
+
+            private fun upgrade(type: HandType, jokerCount: Int) : HandType {
+                if (jokerCount == 0) return type
+                return when (type) {
+                    FIVE_OF_KIND -> FIVE_OF_KIND
+                    FOUR_OF_KIND -> FIVE_OF_KIND
+                    FULL_HOUSE -> FULL_HOUSE
+                    THREE_KIND -> if (jokerCount == 1) FOUR_OF_KIND else FIVE_OF_KIND
+                    TWO_PAIR -> FULL_HOUSE
+                    ONE_PAIR -> upgrade(THREE_KIND, jokerCount - 1)
+                    HIGH_CARD -> upgrade(ONE_PAIR, jokerCount - 1)
                 }
             }
         }
     }
 
     inner class Hand(val cards: String) : Comparable<Hand> {
-        val type = HandType.fromString(cards)
+        val type = HandType.fromString(cards, enableJoker)
 
         override fun compareTo(other: Hand): Int {
             val typeCompare = other.type.compareTo(this.type)
