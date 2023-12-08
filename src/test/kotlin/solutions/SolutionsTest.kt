@@ -3,6 +3,7 @@ package solutions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.assertAll
 import util.currentAdventDay
+import java.math.BigInteger
 import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlin.time.Duration
@@ -15,7 +16,8 @@ class SolutionsTest {
         listOf(25183, 5667240),
         listOf(650599855L, 1240035L),
         listOf(220320, 34454850),
-        listOf(253638586L, 253253225L)
+        listOf(253638586L, 253253225L),
+        listOf(23147, BigInteger("22289513667691"))
     )
 
     @Test
