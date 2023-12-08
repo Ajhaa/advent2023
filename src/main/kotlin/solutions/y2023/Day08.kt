@@ -37,26 +37,7 @@ class Day08 : Solution {
 
         val individualPaths = currents.map { BigInteger.valueOf(findZedEnding(it, instructions, map)) }
 
-        return multiLcm(individualPaths)
-    }
-
-    private fun multiLcm(numbers: List<BigInteger>) : BigInteger {
-        if (numbers.size == 0) return BigInteger.ZERO
-        if (numbers.size == 1) return numbers[0]
-        if (numbers.size == 2) return lcm(numbers[0], numbers[1])
-        val newList = mutableListOf<BigInteger>()
-        for (i in numbers.indices step 2) {
-            val a = numbers[i]
-            val b = numbers.getOrNull(i+1)
-            if (b == null) {
-                newList.add(a)
-                break
-            }
-
-            newList.add(lcm(a, b))
-        }
-
-        return multiLcm(newList)
+        return individualPaths.reduce(::lcm)
     }
 
     private fun lcm(a: BigInteger, b: BigInteger) : BigInteger {
