@@ -6,14 +6,13 @@ import kotlin.time.measureTime
 fun main(argsArray: Array<String>) {
     val programTime = measureTime {
         val args = Args.parse(argsArray)
-
-        runSolutions(args.days, args.year, args.doWarmup)
+        runSolutions(args.days, args.year, args.doWarmup, args.onlyDuration)
     }
 
     println("Total program running time $programTime")
 }
 
-fun runSolutions(days: Iterable<Int>, year: Int, doWarmup: Boolean) {
+fun runSolutions(days: Iterable<Int>, year: Int, doWarmup: Boolean, onlyDurations: Boolean = false) {
     var totalExecTime = Duration.ZERO
     for (day in days) {
         val solution = try {
@@ -25,9 +24,9 @@ fun runSolutions(days: Iterable<Int>, year: Int, doWarmup: Boolean) {
 
         solution.results.forEach {
             totalExecTime += it.second
+            if (onlyDurations) println(it.second.inWholeMicroseconds)
         }
-        println(solution)
+        if (!onlyDurations) println(solution)
     }
-
-    println("Sum of solution execution times: $totalExecTime")
+    if (!onlyDurations) println("Sum of solution execution times: $totalExecTime")
 }

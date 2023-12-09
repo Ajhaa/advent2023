@@ -8,6 +8,7 @@ class Args {
     var year = 2023
     var days = TreeSet<Int>()
     var doWarmup = false
+    var onlyDuration: Boolean = false
 
     companion object {
         fun parse(argsArray: Array<String>): Args {
@@ -25,6 +26,10 @@ class Args {
             }
 
             val currentDay = currentAdventDay(year)
+
+            if (argsSet.remove("duration")) {
+                args.onlyDuration = true
+            }
 
             if (argsSet.remove("warm")) {
                 args.doWarmup = true

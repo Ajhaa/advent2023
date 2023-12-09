@@ -14,3 +14,7 @@ fun currentAdventDay(year: Int) : Int {
         0
     }
 }
+
+fun <K>String.splitMap(splitBy: String, mapFun: (String) -> K) : List<K> {
+    return this.split(splitBy).map(mapFun)
+}
