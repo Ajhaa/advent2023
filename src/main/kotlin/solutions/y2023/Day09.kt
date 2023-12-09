@@ -13,10 +13,27 @@ class Day09 : Solution {
     }
 
     override fun answerPart2(input: PuzzleInput): Any {
-        return 0
+        val lines = input.lines
+        return lines
+            .map { it.splitMap(" ", String::toLong) }
+            .sumOf { extrapolateBackwards(it) }
     }
 
-    private fun extrapolate(numbers: List<Long>) : Long {
+    private tailrec fun extrapolate(numbers: List<Long>, result: Long = numbers.last()) : Long {
+        if (numbers.all { it == 0L }) {
+            return result
+        }
+
+        val diffs = mutableListOf<Long>()
+
+        for (i in 1..<numbers.size) {
+            diffs.add(numbers[i] - numbers[i - 1])
+        }
+
+        return extrapolate(diffs, result + diffs.last())
+    }
+
+    private fun extrapolateBackwards(numbers: List<Long>) : Long {
         if (numbers.all { it == 0L }) {
             return 0
         }
@@ -27,8 +44,7 @@ class Day09 : Solution {
             diffs.add(numbers[i] - numbers[i - 1])
         }
 
-        val result = numbers.last() + extrapolate(diffs)
-        return result
+        return numbers[0] - extrapolateBackwards(diffs)
     }
 
 
