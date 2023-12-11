@@ -1,6 +1,7 @@
 package solutions
 
 import util.currentAdventDay
+import util.splitMapToInt
 import java.util.TreeSet
 
 
@@ -46,7 +47,7 @@ class Args {
                     }
 
                     val dayRange = if (arg.contains("..")) {
-                        val (begin, end) = arg.split("..").map { it.toInt() }
+                        val (begin, end) = arg.splitMapToInt("..")
                         (begin..end)
                     } else {
                         val day = arg.toInt()

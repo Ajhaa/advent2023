@@ -2,24 +2,41 @@ package solutions.y2023
 
 import solutions.PuzzleInput
 import solutions.Solution
-import util.splitMap
+import util.splitMapToLong
 
 class Day09 : Solution {
     override fun answerPart1(input: PuzzleInput): Any {
         val lines = input.lines
-        return lines
-            .map { it.splitMap(" ", String::toLong) }
-            .sumOf { extrapolate(it) }
+        return lines.map { it.splitMapToLong(" ") }
+            .sumOf { lagrange(it, it.size.toLong()) }
+            .toLong()
     }
 
     override fun answerPart2(input: PuzzleInput): Any {
         val lines = input.lines
         return lines
-            .map { it.splitMap(" ", String::toLong) }
-            .sumOf { extrapolateBackwards(it) }
+            .map { it.splitMapToLong(" ") }
+            .sumOf { lagrange(it.reversed(), it.size.toLong()) }
+            .toLong()
     }
 
-    private tailrec fun extrapolate(numbers: List<Long>, result: Long = numbers.last()) : Long {
+    private fun lagrange(points: List<Long>, x: Long): Double {
+        return points.withIndex().sumOf {
+            var a = 1.0
+            var b = 1.0
+
+            for (xi in points.indices) {
+                if (xi == it.index) continue
+                a *= x - xi
+                b *= it.index - xi
+            }
+
+            val c = a / b
+            it.value * c
+        }
+    }
+
+    private tailrec fun extrapolate(numbers: List<Long>, result: Long = numbers.last()): Long {
         if (numbers.all { it == 0L }) {
             return result
         }
@@ -33,7 +50,7 @@ class Day09 : Solution {
         return extrapolate(diffs, result + diffs.last())
     }
 
-    private fun extrapolateBackwards(numbers: List<Long>) : Long {
+    private fun extrapolateBackwards(numbers: List<Long>): Long {
         if (numbers.all { it == 0L }) {
             return 0
         }

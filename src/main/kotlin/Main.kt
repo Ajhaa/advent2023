@@ -15,12 +15,11 @@ fun main(argsArray: Array<String>) {
 fun runSolutions(days: Iterable<Int>, year: Int, doWarmup: Boolean, onlyDurations: Boolean = false) {
     var totalExecTime = Duration.ZERO
     for (day in days) {
-        val solution = try {
-            runSolution(day, year, doWarmup)
-        } catch (e: Error) {
-            println("could not run day $day")
-            continue
-        }
+        val solution = runSolution(day, year, doWarmup)
+//        } catch (e: Error) {
+//            println("could not run day $day")
+//            continue
+//        }
 
         solution.results.forEach {
             totalExecTime += it.second

@@ -2,6 +2,7 @@ package solutions.y2023
 
 import solutions.PuzzleInput
 import solutions.Solution
+import util.splitMapToLong
 
 class Day05 : Solution {
 
@@ -77,7 +78,7 @@ class Day05 : Solution {
 
     private fun createRanges(ranges: List<String>): List<RangeMap> {
         return ranges.map {
-            val (destination, source, size) = it.split(" ").map(String::toLong)
+            val (destination, source, size) = it.splitMapToLong(" ")
             RangeMap(source, destination, size)
         }
     }

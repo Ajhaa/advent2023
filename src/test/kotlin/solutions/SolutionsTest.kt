@@ -18,7 +18,9 @@ class SolutionsTest {
         listOf(220320, 34454850),
         listOf(253638586L, 253253225L),
         listOf(23147, BigInteger("22289513667691")),
-        listOf(2105961943L, 1019L)
+        listOf(2105961943L, 1019L),
+        listOf(6823, 0),
+        listOf(9214785L, 613686987427L)
     )
 
     @Test
